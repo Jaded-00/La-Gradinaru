@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="ro" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Grădinaru - Burger & Grill</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        dark: {
+                            900: '#0f0f11',
+                            800: '#18181b',
+                            700: '#27272a',
+                            600: '#3f3f46'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .text-gradient {
+            background: linear-[#f59e0b, #fbbf24];
+            background: linear-gradient(to right, #f59e0b, #fef08a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-dark-900 text-gray-200 font-sans antialiased selection:bg-amber-500 selection:text-black">
+
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 w-full z-40 transition-all duration-300 glass-panel border-b border-white/10" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-dark-900 font-black text-xl shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid font-bold fa-fire text-dark-900"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-wider text-white block leading-none">LA GRĂDINARU</span>
+                    <span class="text-xs font-semibold text-amber-500 tracking-widest uppercase">Burger & Grill</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#acasa" class="hover:text-amber-500 transition-colors">Acasă</a>
+                <a href="#despre" class="hover:text-amber-500 transition-colors">Despre Noi</a>
+                <a href="#meniu" class="hover:text-amber-500 transition-colors">Meniu</a>
+                <a href="#locatie" class="hover:text-amber-500 transition-colors">Locație & Program</a>
+                <a href="#recenzii" class="hover:text-amber-500 transition-colors">Recenzii</a>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="hidden md:flex items-center space-x-4">
+                <button onclick="openModal('rezervare-modal')" class="px-5 py-2.5 rounded-full border border-amber-500/50 text-amber-400 hover:bg-amber-500/10 font-semibold text-sm transition-all">
+                    <i class="fa-regular fa-calendar-check mr-2"></i>Rezervă Masă
+                </button>
+                <button onclick="toggleCartDrawer()" class="relative px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-dark-900 font-bold text-sm shadow-lg shadow-amber-500/25 transition-all transform active:scale-95">
+                    <i class="fa-solid fa-cart-shopping mr-2"></i>Coș
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center gap-3">
+                <button onclick="toggleCartDrawer()" class="relative p-2 text-amber-500">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="cart-badge-mobile" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-white/10 px-4 pt-4 pb-6 space-y-3">
+        <a href="#acasa" onclick="toggleMobileMenu()" class="block py-2 text-gray-200 hover:text-amber-500 font-medium">Acasă</a>
+        <a href="#despre" onclick="toggleMobileMenu()" class="block py-2 text-gray-200 hover:text-amber-500 font-medium">Despre Noi</a>
+        <a href="#meniu" onclick="toggleMobileMenu()" class="block py-2 text-gray-200 hover:text-amber-500 font-medium">Meniu Interactiv</a>
+        <a href="#locatie" onclick="toggleMobileMenu()" class="block py-2 text-gray-200 hover:text-amber-500 font-medium">Locație & Program</a>
+        <a href="#recenzii" onclick="toggleMobileMenu()" class="block py-2 text-gray-200 hover:text-amber-500 font-medium">Recenzii</a>
+        <div class="pt-4 flex flex-col gap-2">
+            <button onclick="toggleMobileMenu(); openModal('rezervare-modal')" class="w-full py-3 rounded-xl border border-amber-500 text-amber-400 font-semibold text-center">
+                <i class="fa-regular fa-calendar-check mr-2"></i>Rezervă Masă
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="acasa" class="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
+    <!-- Background Image with Dark Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1920&q=80" alt="Delicious Burger" class="w-full h-full object-cover object-center scale-105 filter brightness-[0.35] blur-[1px]">
+        <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/60 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-amber-500/30 text-amber-400 text-xs sm:text-sm font-semibold tracking-wide">
+                    <span class="flex h-2 w-2 rounded-full bg-amber-500 animate-ping"></span>
+                    <i class="fa-solid fa-fire-flame-curved"></i> Gust Autentic La Grătar De Cărbuni
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-none">
+                    Experiență <br class="hidden sm:inline"/>
+                    <span class="text-gradient">Culinară & Vizuală</span>
+                </h1>
+
+                <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                    Burgere artizanale suculente, grătar tradițional pregătit la perfecțiune și ingrediente mereu proaspete. Gustă pasiunea pentru mâncare adevărată!
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="#meniu" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-dark-900 font-extrabold text-base shadow-xl shadow-amber-500/20 hover:scale-105 transition-all text-center">
+                        <i class="fa-solid fa-utensils mr-2"></i>Vezi Meniul Complet
+                    </a>
+                    <button onclick="openModal('rezervare-modal')" class="w-full sm:w-auto px-8 py-4 rounded-full glass-panel hover:bg-white/10 text-white font-bold text-base border border-white/20 transition-all text-center">
+                        <i class="fa-regular fa-clock mr-2"></i>Comandă / Rezervă
+                    </button>
+                </div>
+
+                <!-- Features Highlights -->
+                <div class="grid grid-cols-3 gap-4 pt-8 border-t border-white/10 max-w-lg mx-auto lg:mx-0">
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400">100%</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Carne Proaspătă</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400">15+</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Retete Unice</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl sm:text-3xl font-extrabold text-amber-400">4.9★</div>
+                        <div class="text-xs sm:text-sm text-gray-400">Apreciat de Clienți</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Featured Card Showcase -->
+            <div class="lg:col-span-5 hidden lg:block">
+                <div class="relative mx-auto max-w-md">
+                    <!-- Glow effect -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-amber-500 to-amber-700 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
+                    
+                    <div class="relative glass-panel p-6 rounded-3xl border border-white/10 text-center space-y-4">
+                        <span class="absolute top-4 right-4 bg-amber-500 text-dark-900 text-xs font-black uppercase px-3 py-1 rounded-full">Recomandarea Șefului</span>
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Special Burger" class="w-full h-64 object-cover rounded-2xl shadow-md">
+                        <div class="text-left">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-2xl font-bold text-white">Black Angus Burger</h3>
+                                <span class="text-xl font-black text-amber-400">38 LEI</span>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-2">Chifla brioche proaspătă, carne de vită Black Angus 180g, brânză cheddar maturate, bacon crocant, dulceață de ceapă caramelizată și sos special La Grădinaru.</p>
+                        </div>
+                        <button onclick="openCustomizeModal('b1')" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold transition-colors">
+                            <i class="fa-solid fa-plus mr-2"></i>Adaugă în Coș
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="despre" class="py-20 bg-dark-800 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="relative">
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Grill Master" class="rounded-2xl h-64 w-full object-cover shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80" alt="Delicious Ribs" class="rounded-2xl h-64 w-full object-cover shadow-lg mt-8">
+                </div>
+                <div class="absolute -bottom-6 -right-6 glass-panel border border-amber-500/30 p-6 rounded-2xl hidden sm:block">
+                    <p class="text-3xl font-black text-amber-400">100%</p>
+                    <p class="text-xs text-gray-300 font-medium">Calitate & Pasiune</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="inline-block px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
+                    Povestea Noastră
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                    Pregătit la jar de cărbune, servit din inimă.
+                </h2>
+                <p class="text-gray-300 leading-relaxed">
+                    La **La Grădinaru - Burger & Grill**, credem că o mâncare excepțională începe cu ingrediente de cea mai bună calitate. Nu facem compromisuri: carnea este selectată atent, chiflele sunt coapte zilnic, iar sosurile sunt făcute în casă după rețete proprii.
+                </p>
+                <p class="text-gray-400 leading-relaxed text-sm">
+                    Fie că vrei un burger gourmet plin de aromă, mititei suculenți sau o friptură fragedă la grătar, te așteptăm într-un ambient prietenos și primitor.
+                </p>
+                
+                <div class="grid sm:grid-cols-2 gap-4 pt-2">
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+                            <i class="fa-solid fa-fire text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Grătar cu Cărbuni</h4>
+                            <p class="text-xs text-gray-400">Gust afumat autentic inconfundabil.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+                            <i class="fa-solid fa-seedling text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-sm">Ingrediente Proaspete</h4>
+                            <p class="text-xs text-gray-400">Aprovizionare zilnică de la furnizori locali.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Menu Section -->
+<section id="meniu" class="py-20 bg-dark-900 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+            <div class="inline-block px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
+                Meniu Interactiv
+            </div>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white">Alege Preparatul Tău Favorit</h2>
+            <p class="text-gray-400">Apasă pe oricare produs pentru a-l personaliza și a-l adăuga în coșul tău de comandă!</p>
+        </div>
+
+        <!-- Menu Category Tabs -->
+        <div class="flex items-center justify-center gap-2 sm:gap-4 overflow-x-auto pb-4 mb-10 no-scrollbar">
+            <button onclick="filterMenu('all')" class="menu-tab active-tab px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap bg-amber-500 text-dark-900 shadow-md">
+                <i class="fa-solid fa-border-all mr-2"></i>Toate
+            </button>
+            <button onclick="filterMenu('burgers')" class="menu-tab px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap bg-dark-800 text-gray-300 hover:text-white border border-white/10">
+                <i class="fa-solid fa-hamburger mr-2"></i>Burgere Gourmet
+            </button>
+            <button onclick="filterMenu('grill')" class="menu-tab px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap bg-dark-800 text-gray-300 hover:text-white border border-white/10">
+                <i class="fa-solid fa-drumstick-bite mr-2"></i>Preparate Grill
+            </button>
+            <button onclick="filterMenu('sides')" class="menu-tab px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap bg-dark-800 text-gray-300 hover:text-white border border-white/10">
+                <i class="fa-solid fa-fries mr-2"></i>Garnituri & Sosuri
+            </button>
+            <button onclick="filterMenu('drinks')" class="menu-tab px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap bg-dark-800 text-gray-300 hover:text-white border border-white/10">
+                <i class="fa-solid fa-wine-glass mr-2"></i>Băuturi
+            </button>
+            <button onclick="filterMenu('dessert')" class="menu-tab px-6 py-3 rounded-full text-sm font-bold transition-all whitespace-nowrap bg-dark-800 text-gray-300 hover:text-white border border-white/10">
+                <i class="fa-solid fa-ice-cream mr-2"></i>Deserturi
+            </button>
+        </div>
+
+        <!-- Menu Grid Dynamic Container -->
+        <div id="menu-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- JS will populate menu items here -->
+        </div>
+    </div>
+</section>
+
+<!-- Location & Hours Section -->
+<section id="locatie" class="py-20 bg-dark-800 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+            <!-- Info Column -->
+            <div class="lg:col-span-5 space-y-8">
+                <div>
+                    <div class="inline-block px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">
+                        Unde Ne Găsești
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Program & Locație</h2>
+                    <p class="text-gray-400 mt-2">Vino să ne vizitezi sau comandă cu ridicare personală!</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4 p-4 rounded-2xl glass-panel border border-white/5">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 text-xl">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Adresă</h4>
+                            <p class="text-gray-300 text-sm mt-1">Strada Principala nr. 42, România</p>
+                            <a href="https://maps.google.com" target="_blank" class="inline-block mt-2 text-amber-400 hover:underline text-xs font-semibold">
+                                Deschide în Google Maps <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 p-4 rounded-2xl glass-panel border border-white/5">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 text-xl">
+                            <i class="fa-regular fa-clock"></i>
+                        </div>
+                        <div class="w-full">
+                            <h4 class="text-white font-bold text-lg">Program de Funcționare</h4>
+                            <div class="mt-2 space-y-1 text-sm text-gray-300">
+                                <div class="flex justify-between">
+                                    <span>Luni - Joi:</span>
+                                    <span class="font-semibold text-white">11:00 - 22:00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Vineri - Sâmbătă:</span>
+                                    <span class="font-semibold text-amber-400">11:00 - 23:00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Duminică:</span>
+                                    <span class="font-semibold text-white">12:00 - 22:00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4 p-4 rounded-2xl glass-panel border border-white/5">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 text-xl">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg">Contact & Rezervări</h4>
+                            <p class="text-gray-300 text-sm mt-1">Suntem la un apel distanță pentru comenzi sau întrebări.</p>
+                            <a href="tel:0700000000" class="inline-block mt-2 text-xl font-bold text-amber-400 hover:text-amber-300">
+                                +40 700 000 000
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Mockup / Location Embed -->
+            <div class="lg:col-span-7 h-[450px] rounded-3xl overflow-hidden glass-panel border border-white/10 relative">
+                <iframe 
+                    title="Harta Locatie"
+                    class="w-full h-full filter grayscale invert contrast-125 opacity-80 hover:opacity-100 transition-opacity" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11396.223842183203!2d26.102538!3d44.43225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDI1JzebNi4xIk4gMjbCsDA2JzA5LjEiRQ!5e0!3m2!1sro!2sro!4v1620000000000!5m2!1sro!2sro" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+                <div class="absolute bottom-4 left-4 right-4 glass-panel p-4 rounded-xl border border-white/10 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-store text-amber-400 text-xl"></i>
+                        <div>
+                            <p class="text-white text-sm font-bold">La Grădinaru - Burger & Grill</p>
+                            <p class="text-xs text-gray-400">Vino să mănânci proaspăt!</p>
+                        </div>
+                    </div>
+                    <button onclick="openModal('rezervare-modal')" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-dark-900 font-bold text-xs rounded-lg transition-colors">
+                        Rezervă Masă
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<section id="recenzii" class="py-20 bg-dark-900 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-12">
+            <div class="inline-block px-3 py-1 rounded-md bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
+                Ce Spun Clienții
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Recenzii & Experiențe</h2>
+            <p class="text-gray-400">Parerea celor care ne trec pragul este cea mai bună carte de vizită.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Review 1 -->
+            <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4 relative">
+                <div class="flex text-amber-400 text-sm gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-gray-300 text-sm italic">
+                    "Cel mai bun burger mâncat în ultima vreme! Carnea suculentă, făcută exact la gradul solicitat, iar sosul casei este genial. Recomand cu mare încredere!"
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center">
+                        AM
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Andrei M.</h4>
+                        <p class="text-xs text-gray-500">Client Fidel</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4 relative">
+                <div class="flex text-amber-400 text-sm gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-gray-300 text-sm italic">
+                    "Grătarul de cărbuni face toată diferența. Mititeii sunt perfecți, iar cartofii prăjiți cu parmezan și usturoi sunt dependență curată. Servire ireproșabilă!"
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center">
+                        EC
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Elena C.</h4>
+                        <p class="text-xs text-gray-500">Recenzie Facebook</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4 relative">
+                <div class="flex text-amber-400 text-sm gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="text-gray-300 text-sm italic">
+                    "Atmosferă super faină, personal amabil și mâncare pe măsură. Raport calitate-preț excelent pentru preparate atât de proaspete!"
+                </p>
+                <div class="flex items-center gap-3 pt-4 border-t border-white/5">
+                    <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center">
+                        RP
+                    </div>
+                    <div>
+                        <h4 class="text-white font-bold text-sm">Radu P.</h4>
+                        <p class="text-xs text-gray-500">Local Guide Google</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media Link Banner -->
+        <div class="mt-12 text-center">
+            <a href="https://www.facebook.com/p/La-Gradinaru-burgergrill-100086767728781/" target="_blank" class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#1877F2]/20 border border-[#1877F2]/40 text-white font-semibold hover:bg-[#1877F2]/30 transition-all text-sm">
+                <i class="fa-brands fa-facebook text-xl text-[#1877F2]"></i>
+                Urmărește-ne pe Facebook pentru noutăți & oferte!
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark-900 border-t border-white/10 pt-16 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+            <!-- Brand info -->
+            <div class="space-y-4 md:col-span-1">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-dark-900 font-bold">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <span class="text-lg font-black text-white">LA GRĂDINARU</span>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    Preparate la grătar și burgere gourmet făcute cu pasiune, respectând gustul autentic al cărnii fragede.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-white font-bold text-sm mb-4">Navigare Rapidă</h4>
+                <ul class="space-y-2 text-xs text-gray-400">
+                    <li><a href="#acasa" class="hover:text-amber-400 transition-colors">Acasă</a></li>
+                    <li><a href="#despre" class="hover:text-amber-400 transition-colors">Despre Noi</a></li>
+                    <li><a href="#meniu" class="hover:text-amber-400 transition-colors">Meniu Interactiv</a></li>
+                    <li><a href="#locatie" class="hover:text-amber-400 transition-colors">Locație & Program</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal / Contact -->
+            <div>
+                <h4 class="text-white font-bold text-sm mb-4">Contact Direct</h4>
+                <ul class="space-y-2 text-xs text-gray-400">
+                    <li><i class="fa-solid fa-phone mr-2 text-amber-500"></i> +40 700 000 000</li>
+                    <li><i class="fa-solid fa-envelope mr-2 text-amber-500"></i> contact@lagradinaru.ro</li>
+                    <li><i class="fa-solid fa-location-dot mr-2 text-amber-500"></i> Str. Principala 42</li>
+                </ul>
+            </div>
+
+            <!-- Social Links -->
+            <div>
+                <h4 class="text-white font-bold text-sm mb-4">Urmărește-ne</h4>
+                <div class="flex gap-3">
+                    <a href="https://www.facebook.com/p/La-Gradinaru-burgergrill-100086767728781/" target="_blank" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-gray-300 hover:text-amber-400 hover:border-amber-500/50 transition-all">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-gray-300 hover:text-amber-400 hover:border-amber-500/50 transition-all">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-gray-300 hover:text-amber-400 hover:border-amber-500/50 transition-all">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+            <p>© 2026 La Grădinaru - Burger & Grill. Toate drepturile rezervate.</p>
+            <p class="flex gap-4">
+                <a href="#" class="hover:text-gray-400">Politică de Confidențialitate</a>
+                <a href="#" class="hover:text-gray-400">Termeni și Condiții</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- Cart Drawer Panel -->
+<div id="cart-drawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0">
+    <div id="cart-backdrop" onclick="toggleCartDrawer()" class="absolute inset-0 bg-black/70 backdrop-blur-sm pointer-events-auto"></div>
+    
+    <div class="absolute right-0 top-0 h-full w-full max-w-md bg-dark-800 border-l border-white/10 p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 transform translate-x-full pointer-events-auto" id="cart-panel">
+        <div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-amber-500"></i> Coșul Tău
+                </h3>
+                <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items Scroll List -->
+            <div id="cart-items-container" class="mt-6 space-y-4 max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
+                <!-- Dynamic Items Inserted via JS -->
+            </div>
+        </div>
+
+        <!-- Cart Total & Checkout -->
+        <div class="pt-6 border-t border-white/10 space-y-4">
+            <div class="flex justify-between items-center text-lg font-bold">
+                <span class="text-gray-300">Total de plată:</span>
+                <span id="cart-total-price" class="text-amber-400 text-2xl font-black">0 LEI</span>
+            </div>
+
+            <div class="space-y-2">
+                <button onclick="sendWhatsAppOrder()" class="w-full py-3.5 rounded-xl bg-green-600 hover:bg-green-500 text-white font-bold flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Trimite Comanda pe WhatsApp
+                </button>
+                <button onclick="simulatePhoneOrder()" class="w-full py-3.5 rounded-xl glass-panel hover:bg-white/10 text-white font-semibold text-sm flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-solid fa-phone text-amber-500"></i> Comandă Telefonică
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Item Customization Modal -->
+<div id="customize-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div onclick="closeModal('customize-modal')" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative bg-dark-800 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-lg w-full z-10 space-y-6 max-h-[90vh] overflow-y-auto">
+        <button onclick="closeModal('customize-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <div id="modal-item-details">
+            <!-- Dynamic JS details -->
+        </div>
+    </div>
+</div>
+
+<!-- Reservation Modal -->
+<div id="rezervare-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div onclick="closeModal('rezervare-modal')" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+    <div class="relative bg-dark-800 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-md w-full z-10 space-y-6">
+        <button onclick="closeModal('rezervare-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-2">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <div class="text-center space-y-2">
+            <div class="w-12 h-12 rounded-full bg-amber-500/10 text-amber-400 mx-auto flex items-center justify-center text-xl">
+                <i class="fa-regular fa-calendar-check"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold text-white">Rezervă o Masă</h3>
+            <p class="text-xs text-gray-400">Completează datele de mai jos și te vom contacta pentru confirmare.</p>
+        </div>
+
+        <form id="reservation-form" onsubmit="handleReservationSubmit(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-semibold text-gray-300 mb-1">Nume și Prenume</label>
+                <input type="text" required class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm" placeholder="ex: Ion Popescu">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-300 mb-1">Număr Telefon</label>
+                <input type="tel" required class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm" placeholder="07xx xxx xxx">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Număr Persoane</label>
+                    <select class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+                        <option>2 Persoane</option>
+                        <option>3-4 Persoane</option>
+                        <option>5-6 Persoane</option>
+                        <option>Grup Mare (7+)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Data</label>
+                    <input type="date" required class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-300 mb-1">Ora Dorită</label>
+                <input type="time" required class="w-full bg-dark-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 text-sm">
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-dark-900 font-extrabold rounded-xl shadow-lg shadow-amber-500/20 transition-all">
+                Trimite Rezervarea
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // --- MENU DATA ---
+    const menuItems = [
+        // BURGERS
+        {
+            id: 'b1',
+            category: 'burgers',
+            title: 'Black Angus Burger',
+            price: 38,
+            image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
+            description: 'Carne vită Black Angus 180g, brânză cheddar, bacon crocant, dulceață de ceapă caramelizată, sosul casei.',
+            options: {
+                doneness: ['Medium Rare', 'Medium', 'Well Done'],
+                extraToppings: [
+                    { name: 'Extra Cheddar', price: 4 },
+                    { name: 'Bacon Dublu', price: 5 },
+                    { name: 'Jalapenos', price: 3 }
+                ]
+            }
+        },
+        {
+            id: 'b2',
+            category: 'burgers',
+            title: 'Smoky BBQ Grill Burger',
+            price: 36,
+            image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80',
+            description: 'Carne de vită la grătar, inele de ceapă prăjite, sos BBQ afumat, salată verde, roșii proaspete.',
+            options: {
+                doneness: ['Medium', 'Well Done'],
+                extraToppings: [
+                    { name: 'Inele de Ceapă Extra', price: 4 },
+                    { name: 'Sos BBQ Extra', price: 3 }
+                ]
+            }
+        },
+        {
+            id: 'b3',
+            category: 'burgers',
+            title: 'Crispy Chicken Burger',
+            price: 32,
+            image: 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=600&q=80',
+            description: 'Piept de pui crocant în crustă pufos-crocantă, sos mayo-garlic, castraveți murați, salată coleslaw.',
+            options: {
+                extraToppings: [
+                    { name: 'Sos Spicy Mayo', price: 3 },
+                    { name: 'Cașcaval Pane', price: 6 }
+                ]
+            }
+        },
+
+        // GRILL
+        {
+            id: 'g1',
+            category: 'grill',
+            title: 'Mici Tradiționali La Grătar (4 buc)',
+            price: 28,
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80',
+            description: 'Mici mărime generoasă, făcuți pe jar de cărbuni, serviți cu muștar de masă și pâine proaspătă.',
+            options: {
+                extraToppings: [
+                    { name: 'Mic Suplimentar (+1 buc)', price: 7 },
+                    { name: 'Muștar Cu Hrean', price: 2 }
+                ]
+            }
+        },
+        {
+            id: 'g2',
+            category: 'grill',
+            title: 'Coaste de Porc Glazurate BBQ',
+            price: 52,
+            image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?auto=format&fit=crop&w=600&q=80',
+            description: 'Coaste fragede gătite lent și caramelizate la grătar cu sos barbeque special, 450g.',
+            options: {
+                extraToppings: [
+                    { name: 'Sos Iute Extra', price: 3 }
+                ]
+            }
+        },
+        {
+            id: 'g3',
+            category: 'grill',
+            title: 'Ceafă de Porc Mărinată',
+            price: 34,
+            image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80',
+            description: 'Ceafă de porc fragedă, frumos marcată de grătarul cu cărbuni și condimente speciale, 220g.',
+            options: []
+        },
+
+        // SIDES
+        {
+            id: 's1',
+            category: 'sides',
+            title: 'Cartofi Dippers cu Parmezan și Usturoi',
+            price: 16,
+            image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80',
+            description: 'Cartofi aurii prăjiți, presărați generos cu parmezan ras și usturoi verde.',
+            options: []
+        },
+        {
+            id: 's2',
+            category: 'sides',
+            title: 'Sosul Casei "La Grădinaru"',
+            price: 5,
+            image: 'https://images.unsplash.com/photo-1472476443507-c7a5948772fc?auto=format&fit=crop&w=600&q=80',
+            description: 'Sos cremos, ușor afumat cu verdețuri proaspete.',
+            options: []
+        },
+
+        // DRINKS
+        {
+            id: 'd1',
+            category: 'drinks',
+            title: 'Limonadă de Casă cu Miere (500ml)',
+            price: 16,
+            image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=600&q=80',
+            description: 'Lămâi stoarse pe loc, miere polifloră și mentă proaspătă.',
+            options: {
+                flavors: ['Clasică', 'Menta & Ghimbir', 'Fructe de Pădure']
+            }
+        },
+        {
+            id: 'd2',
+            category: 'drinks',
+            title: 'Răcoritoare Coca-Cola / Zero (330ml)',
+            price: 8,
+            image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80',
+            description: 'Sticlă rețea rece.',
+            options: []
+        },
+
+        // DESSERT
+        {
+            id: 'ds1',
+            category: 'dessert',
+            title: 'Papanași Tradiționali cu Smântână și Dulceață',
+            price: 24,
+            image: 'https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=600&q=80',
+            description: 'Papanași calzi din brânză dulce de vaci, dulceață de afine din bșlugșug și smântână fină.',
+            options: []
+        }
+    ];
+
+    // --- STATE MANAGEMENT ---
+    let cart = [];
+    let activeCategory = 'all';
+
+    window.addEventListener('DOMContentLoaded', () => {
+        renderMenu();
+        updateCartUI();
+    });
+
+    // Render Menu Items
+    function renderMenu() {
+        const grid = document.getElementById('menu-grid');
+        grid.innerHTML = '';
+
+        const filtered = activeCategory === 'all' 
+            ? menuItems 
+            : menuItems.filter(item => item.category === activeCategory);
+
+        filtered.forEach(item => {
+            const card = document.createElement('div');
+            card.className = "glass-panel rounded-3xl overflow-hidden border border-white/10 hover:border-amber-500/40 transition-all group duration-300 flex flex-col justify-between";
+            card.innerHTML = `
+                <div>
+                    <div class="relative overflow-hidden h-52">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-3 right-3 bg-dark-900/80 backdrop-blur-md text-amber-400 font-extrabold text-sm px-3 py-1 rounded-full border border-amber-500/20">
+                            ${item.price} LEI
+                        </span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">${item.title}</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed line-clamp-3">${item.description}</p>
+                    </div>
+                </div>
+                <div class="p-5 pt-0">
+                    <button onclick="openCustomizeModal('${item.id}')" class="w-full py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500 text-amber-400 hover:text-dark-900 font-bold text-sm transition-all flex items-center justify-center gap-2 border border-amber-500/30">
+                        <i class="fa-solid fa-plus text-xs"></i> Adaugă în Comandă
+                    </button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // Filter Menu Categories
+    function filterMenu(category) {
+        activeCategory = category;
+        document.querySelectorAll('.menu-tab').forEach(btn => {
+            btn.classList.remove('bg-amber-500', 'text-dark-900', 'shadow-md');
+            btn.classList.add('bg-dark-800', 'text-gray-300', 'border', 'border-white/10');
+        });
+
+        event.currentTarget.classList.remove('bg-dark-800', 'text-gray-300', 'border', 'border-white/10');
+        event.currentTarget.classList.add('bg-amber-500', 'text-dark-900', 'shadow-md');
+
+        renderMenu();
+    }
+
+    // --- CUSTOMIZATION MODAL ---
+    let currentSelectedItemId = null;
+
+    function openCustomizeModal(itemId) {
+        currentSelectedItemId = itemId;
+        const item = menuItems.find(i => i.id === itemId);
+        if (!item) return;
+
+        const container = document.getElementById('modal-item-details');
+        
+        let optionsHTML = '';
+
+        // Doneness options if burger
+        if (item.options && item.options.doneness) {
+            optionsHTML += `
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-amber-400 uppercase tracking-wider block">Grad de Coacere Carne</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        ${item.options.doneness.map((d, idx) => `
+                            <label class="cursor-pointer">
+                                <input type="radio" name="doneness" value="${d}" ${idx===0?'checked':''} class="peer hidden">
+                                <div class="p-2 text-center text-xs rounded-xl border border-white/10 bg-dark-900 text-gray-300 peer-checked:border-amber-500 peer-checked:bg-amber-500/10 peer-checked:text-amber-400 font-semibold transition-all">
+                                    ${d}
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Extra toppings options
+        if (item.options && item.options.extraToppings && item.options.extraToppings.length > 0) {
+            optionsHTML += `
+                <div class="space-y-2 pt-2">
+                    <label class="text-xs font-bold text-amber-400 uppercase tracking-wider block">Extra Topping-uri / Adăugiri</label>
+                    <div class="space-y-2">
+                        ${item.options.extraToppings.map((top, idx) => `
+                            <label class="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-dark-900 cursor-pointer hover:border-white/20">
+                                <span class="text-xs text-gray-200 font-medium">${top.name} (+${top.price} LEI)</span>
+                                <input type="checkbox" name="extra" value="${top.name}" data-price="${top.price}" class="w-4 h-4 accent-amber-500 rounded">
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="flex gap-4 items-center">
+                <img src="${item.image}" alt="${item.title}" class="w-20 h-20 rounded-2xl object-cover shrink-0">
+                <div>
+                    <h3 class="text-xl font-extrabold text-white">${item.title}</h3>
+                    <p class="text-amber-400 font-black text-lg">${item.price} LEI</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-400">${item.description}</p>
+            
+            ${optionsHTML}
+
+            <div class="pt-4 flex items-center gap-4 border-t border-white/10">
+                <button onclick="confirmAddToCart()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-dark-900 font-extrabold rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-plus"></i> Adaugă în Coș
+                </button>
+            </div>
+        `;
+
+        openModal('customize-modal');
+    }
+
+    function confirmAddToCart() {
+        const item = menuItems.find(i => i.id === currentSelectedItemId);
+        if (!item) return;
+
+        let selectedDoneness = '';
+        const donenessRadio = document.querySelector('input[name="doneness"]:checked');
+        if (donenessRadio) selectedDoneness = donenessRadio.value;
+
+        let extraPrice = 0;
+        let selectedExtras = [];
+        const extraCheckboxes = document.querySelectorAll('input[name="extra"]:checked');
+        extraCheckboxes.forEach(cb => {
+            selectedExtras.push(cb.value);
+            extraPrice += parseFloat(cb.getAttribute('data-price'));
+        });
+
+        const cartItem = {
+            cartId: Date.now(),
+            id: item.id,
+            title: item.title,
+            basePrice: item.price,
+            totalUnitPrice: item.price + extraPrice,
+            doneness: selectedDoneness,
+            extras: selectedExtras,
+            quantity: 1
+        };
+
+        cart.push(cartItem);
+        updateCartUI();
+        closeModal('customize-modal');
+        toggleCartDrawer(true); // Open drawer on add
+    }
+
+    // --- CART DRAWER LOGIC ---
+    function toggleCartDrawer(forceOpen = false) {
+        const drawer = document.getElementById('cart-drawer');
+        const panel = document.getElementById('cart-panel');
+
+        if (forceOpen || drawer.classList.contains('opacity-0')) {
+            drawer.classList.remove('opacity-0', 'pointer-events-none');
+            panel.classList.remove('translate-x-full');
+        } else {
+            drawer.classList.add('opacity-0', 'pointer-events-none');
+            panel.classList.add('translate-x-full');
+        }
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cart-items-container');
+        const totalPriceEl = document.getElementById('cart-total-price');
+        const badgeDesktop = document.getElementById('cart-badge');
+        const badgeMobile = document.getElementById('cart-badge-mobile');
+
+        container.innerHTML = '';
+        let total = 0;
+        let count = 0;
+
+        if (cart.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-12 text-gray-500 space-y-3">
+                    <i class="fa-solid fa-basket-shopping text-4xl text-gray-600"></i>
+                    <p class="text-sm font-medium">Coșul tău de cumpărături este gol.</p>
+                </div>
+            `;
+        } else {
+            cart.forEach(item => {
+                total += item.totalUnitPrice * item.quantity;
+                count += item.quantity;
+
+                const el = document.createElement('div');
+                el.className = "p-4 rounded-2xl glass-panel border border-white/5 space-y-2 relative";
+                el.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="text-white font-bold text-sm">${item.title}</h4>
+                            ${item.doneness ? `<p class="text-[11px] text-amber-400">Coacere: ${item.doneness}</p>` : ''}
+                            ${item.extras.length > 0 ? `<p class="text-[11px] text-gray-400">Extra: ${item.extras.join(', ')}</p>` : ''}
+                        </div>
+                        <button onclick="removeFromCart(${item.cartId})" class="text-gray-500 hover:text-red-400 text-xs p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-white/5 text-xs">
+                        <span class="text-amber-400 font-bold">${item.totalUnitPrice * item.quantity} LEI</span>
+                        <div class="flex items-center gap-2 bg-dark-900 rounded-lg border border-white/10 px-2 py-1">
+                            <button onclick="changeQty(${item.cartId}, -1)" class="text-gray-400 hover:text-white">-</button>
+                            <span class="text-white font-bold px-1">${item.quantity}</span>
+                            <button onclick="changeQty(${item.cartId}, 1)" class="text-gray-400 hover:text-white">+</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        totalPriceEl.innerText = `${total} LEI`;
+
+        if (count > 0) {
+            badgeDesktop.innerText = count;
+            badgeDesktop.classList.remove('hidden');
+            badgeMobile.innerText = count;
+            badgeMobile.classList.remove('hidden');
+        } else {
+            badgeDesktop.classList.add('hidden');
+            badgeMobile.classList.add('hidden');
+        }
+    }
+
+    function changeQty(cartId, delta) {
+        const item = cart.find(i => i.cartId === cartId);
+        if (!item) return;
+
+        item.quantity += delta;
+        if (item.quantity <= 0) {
+            cart = cart.filter(i => i.cartId !== cartId);
+        }
+        updateCartUI();
+    }
+
+    function removeFromCart(cartId) {
+        cart = cart.filter(i => i.cartId !== cartId);
+        updateCartUI();
+    }
+
+    function sendWhatsAppOrder() {
+        if (cart.length === 0) {
+            alert('Coșul tău este gol! Adaugă produse din meniu.');
+            return;
+        }
+
+        let message = 'Salut! Doresc să plasez următoarea comandă la La Grădinaru:\n\n';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const itemTotal = item.totalUnitPrice * item.quantity;
+            total += itemTotal;
+            message += `${index + 1}. *${item.title}* x${item.quantity} (${itemTotal} LEI)\n`;
+            if (item.doneness) message += `   - Coacere: ${item.doneness}\n`;
+            if (item.extras.length > 0) message += `   - Extra: ${item.extras.join(', ')}\n`;
+        });
+
+        message += `\n*TOTAL DE PLATĂ:* ${total} LEI`;
+        message += `\n\nVă rog să îmi confirmați timpul estimat de livrare/preluare!`;
+
+        const encoded = encodeURIComponent(message);
+        window.open(`https://wa.me/40700000000?text=${encoded}`, '_blank');
+    }
+
+    function simulatePhoneOrder() {
+        window.location.href = 'tel:0700000000';
+    }
+
+    // --- MODAL UTILS ---
+    function openModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+    }
+
+    function handleReservationSubmit(e) {
+        e.preventDefault();
+        alert('Rezervarea dumneavoastră a fost înregistrată cu succes! Vă vom contacta telefonic pentru confirmare.');
+        closeModal('rezervare-modal');
+    }
+
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    }
+</script>
+
+</body>
+</html>
